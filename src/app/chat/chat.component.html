@@ -1,3 +1,29 @@
-<p>
-  chat works!
-</p>
+<div>
+
+</div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <span *ngIf="member">{{member.nickname}} online</span>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content fxLayout="column" fxLayoutAlign="start start">
+    <div class="chat-conversation-user" *ngFor="let chat of chatList" [class.me]="chat.from === member.nickname" [class.them]="chat.from !== member.nickname">
+      <div class="chat-conversation-message">
+        <p>from {{chat.from}}</p>
+        <p>{{chat.message}}<span class="chat-date">{{ chat.date | date: 'yyyy-MM-dd HH:mm' }}</span></p>
+      </div>
+    </div>
+  </mat-card-content>
+  <hr>
+  <mat-card-actions>
+    <div fxLayout="row" layout-align="start center">
+      <mat-form-field class="mr-1 ml-1" fxFlex>
+        <input matInput placeholder="Send message" [(ngModel)]="message" (keyup.enter)="send()">
+      </mat-form-field>
+      <button mat-fab (click)="send()" (keyup)="send()">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>
