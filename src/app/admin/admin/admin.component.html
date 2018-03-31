@@ -1,0 +1,33 @@
+<mat-toolbar color="primary">
+  <span>관리자 사이트</span>
+</mat-toolbar>
+<div fxLayout="row" fxLayoutAlign="start start">
+  <div  fxFlex="0 0 300px" class="ma-1">
+    <!-- 좌측 사이드바 -->
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            뉴스 관리
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p routerLink="/admin/news" style="cursor: pointer;">뉴스 보기</p>
+        <p>뉴스 등록</p>
+      </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          회원관리
+        </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>회원보기</p> <p>회원등록</p>
+        </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <!-- 뉴스 내용 -->
+  <div fxFlex="1 1 auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+

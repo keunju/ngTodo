@@ -17,20 +17,36 @@
     </form>
 
     <div class="table mt-2">
-      <div class="tr">
+      <div class="tr" (click)="slide()">
         <div class="th">완료</div>
         <div class="th">todo</div>
         <div class="th">생성일</div>
         <div class="th">수정일</div>
         <div class="th">삭제</div>
       </div>
-      <div class="tr" *ngFor="let todo of todoList">
-        <div class="td">{{todo.isFinished ? '완료' : '미완료'}}</div>
-        <div class="td">{{todo.todo}}</div>
-        <div class="td">{{todo.created}}</div>
-        <div class="td">{{todo.updated}}</div>
-        <div class="td"><button mat-raised-button color="warn">삭제</button></div>
-      </div>
+      <ng-template ngFor let-todo [ngForOf]="todoList" let-idx="index">
+        <div class="tbody tr" [@flyInOut] = "'in'" *ngIf="!todo.isEdited" appHighlight [highlightColor]="'#c8fffb'">
+          <div class="td">{{todo.isFinished ? '완료' : '미완료'}}</div>
+          <div class="td">{{todo.todo}}</div>
+          <div class="td">{{todo.created | mydate:'aaa'}}</div>
+          <div class="td">{{todo.updated | date:'yyyy-mm-dd aa HH:mm'}}</div>
+          <div class="td">
+            <button mat-raised-button color="accent" (click)="save(todo)">수정</button>
+            <button mat-raised-button color="warn" (click)="removeTodo(todo.todo_id, idx)">삭제</button>
+          </div>
+        </div>
+        <div class="tr" [@flyInOut] = "'in'" *ngIf="todo.isEdited">
+          <div class="td"><input type="checkbox" [value]="todo.isFinish"/></div>
+          <div class="td"><input [(ngModel)]="todo.todo"/></div>
+          <div class="td">{{todo.created}}</div>
+          <div class="td">{{todo.updated}}</div>
+          <div class="td">
+            <button mat-raised-button color="accent" (click)="modifyTodo(todo)">저장</button>
+            <button mat-raised-button color="warn" (click) = "restore(todo)">취소</button>
+          </div>
+        </div>
+      </ng-template>
+
     </div>
   </mat-card-content>
 </mat-card>
