@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment} from '../environments/environment';
 import {TodoVO} from './domain/todo.vo';
 import {Observable} from 'rxjs/Observable';
@@ -44,5 +44,24 @@ export class UserService {
   // login & signUp
   signUp(params: MemberVO): Observable<ResultVO> {
     return this.http.post<ResultVO>(this.SERVER + '/api/signUp', JSON.stringify(params), {headers: this.headers});
+  }
+
+  // 인증이 필요한 API ===========================================================================
+  getMember(member_id: number): Observable<HttpResponse<MemberVO>> {
+    const header = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('token')
+    });
+
+    return this.http.get<MemberVO>(this.SERVER + '/member/api/member?member_id=' + member_id,
+      {headers: header, observe: 'response'});
+  }
+
+  modifyMember(member: MemberVO): Observable<HttpResponse<ResultVO>> {
+    const header = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('token')
+    });
+    return this.http.put<ResultVO>(this.SERVER + '/member/api/member', member, {headers: header, observe: 'response'});
   }
 }

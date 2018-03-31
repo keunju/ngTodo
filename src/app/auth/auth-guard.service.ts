@@ -16,10 +16,12 @@ export class AuthGuardService implements CanLoad, CanActivate, CanActivateChild 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return undefined;
   }
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const url: string = state.url;
     return this.checkLogin(url);
   }
+
   canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
     if (this.isAdmin()) {
       return true;
@@ -54,5 +56,34 @@ export class AuthGuardService implements CanLoad, CanActivate, CanActivateChild 
     this.redirectUrl = url;
     this.router.navigateByUrl('/login');
     return false;
+  }
+
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      // console.log(this.jwtHelper.decodeToken(token));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  logOut() {
+    // 스토리지에 저장된 토큰 정보와 인증 정보를 삭제
+    localStorage.removeItem('token');
+    this.redirectUrl = null;
+    this.router.navigateByUrl('/');
+  }
+
+  getMemberId(): number {
+    const token = localStorage.getItem('token');
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      // console.log(this.jwtHelper.decodeToken(token));
+      return +(this.jwtHelper.decodeToken(token).jti);
+    } else {
+      return 0;
+    }
   }
 }

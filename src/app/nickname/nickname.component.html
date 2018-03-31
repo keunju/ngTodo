@@ -1,3 +1,21 @@
-<p>
-  nickname works!
-</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      회원 정보 변경
+    </mat-card-title>
+  </mat-card-header>
+
+  <form [formGroup]="form" (ngSubmit)="modifyMember()" novalidate>
+    <mat-card-content fxLayout="column">
+      <mat-form-field>
+        <input matInput formControlName="nickname" placeholder="닉네임">
+        <mat-error *ngIf="form.controls['nickname'].hasError('required') && form.controls['nickname'].touched">닉네임을 입력하세요</mat-error>
+        <mat-error *ngIf="form.controls['nickname'].hasError('minlength') && form.controls['nickname'].touched">4자이상 12자이하 입력하세요</mat-error>
+      </mat-form-field>
+
+      <button type="submit" mat-raised-button color="primary">
+        수 정
+      </button>
+    </mat-card-content>
+  </form>
+</mat-card>
