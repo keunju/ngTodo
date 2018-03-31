@@ -33,11 +33,11 @@ const routes: Routes = [
       {path: 'angular', component: AngularComponent},
       {path: 'login', component: LoginComponent},
       {path: 'register', component: RegisterComponent},
-      {path: 'nickname', component : NicknameComponent},
+      {path: 'nickname', component : NicknameComponent, canActivate: [AuthGuardService]}, // 특정 페이지 차단 할 경우
       {path: 'chat', component: ChatComponent},
     ]},
   // 관리자 화면
-  { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule'}
+  { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule', canLoad: [AuthGuardService]}
 
 ];
 
